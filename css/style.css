@@ -1290,4 +1290,22 @@ input[type="text"] {
   opacity: 0;
 }
 
+.download-btn {
+    background-color: #f1af07; /* Yellow */
+    color: #333;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn:hover {
+    background-color: #FFC300; /* Slightly deeper yellow */
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
 /*# sourceMappingURL=style.css.map */
