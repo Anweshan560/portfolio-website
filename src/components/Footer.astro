@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/content';
+
+const now = new Date();
+const year = now.getFullYear();
+const build = `${year}.${String(now.getMonth() + 1).padStart(2, '0')}`;
+---
+<footer class="site-footer">
+  <div class="container foot">
+    <span>© {year} {profile.name} · Designed &amp; tested by me.</span>
+    <span class="mono build">
+      <span class="dot" aria-hidden="true"></span>
+      build #{build} · all checks passing
+    </span>
+    <a href="#top" class="text-btn top">Back to top <Icon name="arrowUp" size={16} /></a>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); background: var(--bg); }
+  .foot {
+    padding-top: 32px; padding-bottom: 32px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+    font-size: 14px; color: var(--muted);
+  }
+  .build { font-size: 13px; display: inline-flex; align-items: center; gap: 10px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .top { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--muted); text-decoration: none; }
+</style>

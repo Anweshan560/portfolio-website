@@ -1,0 +1,123 @@
+---
+import Icon from './Icon.astro';
+import { projects, projectCategories } from '../data/content';
+---
+<section id="projects" class="container section stack" style="gap: 36px" data-filter-root>
+  <div class="head">
+    <div class="stack" style="gap: 16px">
+      <div class="eyebrow">04 · describe('projects')</div>
+      <h2 class="h2">Projects</h2>
+    </div>
+    <div class="chips" role="group" aria-label="Filter projects">
+      {projectCategories.map((c, i) => (
+        <button type="button" class="chip" data-filter={c.id} aria-pressed={i === 0 ? 'true' : 'false'}>{c.label}</button>
+      ))}
+    </div>
+  </div>
+  <div class="grid">
+    {projects.map((p) => (
+      <article class:list={['card', 'project', { 'has-link': p.url }]} data-cats={p.cats.join(' ')}>
+        <div class="top mono">
+          <span class="id">{p.id} · {p.catLabel}</span>
+          {p.current ? (
+            <span class="pass active"><span class="live pulse" aria-hidden="true"></span> ACTIVE</span>
+          ) : (
+            <span class="pass"><Icon name="check" size={12} stroke={3} /> PASSED</span>
+          )}
+        </div>
+        <div class="body">
+          <h3>
+            {p.url ? (
+              <a href={p.url} class="card-link" target="_blank" rel="noopener noreferrer">{p.title}</a>
+            ) : p.title}
+          </h3>
+          <p class="desc">{p.desc}</p>
+          <div class="tags">
+            {p.stack.map((t) => <span class="tag">{t}</span>)}
+          </div>
+          <dl class="report" id={`report-${p.id}`} hidden>
+            <dt class="mono">SCOPE</dt><dd>{p.scope}</dd>
+            <dt class="mono">APPROACH</dt><dd>{p.approach}</dd>
+            <dt class="mono">RESULT</dt><dd class="result">{p.result}</dd>
+          </dl>
+        </div>
+        <div class="foot">
+          <button type="button" class="text-btn toggle" aria-expanded="false" aria-controls={`report-${p.id}`} data-toggle>
+            <span data-label>View test report</span>
+            <span class="caret" aria-hidden="true">▾</span>
+          </button>
+          {p.url && (
+            <span class="visit" aria-hidden="true">
+              Visit site <Icon name="external" size={15} />
+            </span>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 18px; align-items: stretch; }
+  .project { position: relative; display: flex; flex-direction: column; overflow: hidden; }
+  /* The title link stretches over the whole card, so clicking anywhere opens the site. */
+  .card-link { color: inherit; text-decoration: none; }
+  .card-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .card-link:focus-visible { outline: none; }
+  .project:has(.card-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .has-link { cursor: pointer; }
+  .has-link:hover .card-link { color: var(--accent-hover); }
+  .has-link:hover .visit { color: var(--accent-hover); }
+  /* Keep the report toggle and open report clickable above the card link. */
+  .toggle, .report { position: relative; z-index: 1; }
+  .top {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--bg-2); font-size: 12px;
+  }
+  .id { color: var(--muted); }
+  .pass {
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+    background: rgba(52, 211, 153, 0.12); color: var(--accent-hover); font-weight: 600; flex: none;
+  }
+  .pass.active { background: rgba(251, 191, 36, 0.12); color: #fde68a; }
+  .live { width: 7px; height: 7px; border-radius: 50%; background: #fbbf24; display: inline-block; }
+  .body { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .body h3 { font-size: 20px; font-weight: 600; color: var(--text-strong); }
+  .desc { font-size: 15px; line-height: 1.65; color: var(--muted); }
+  .body .tags { margin-top: auto; }
+  .report {
+    margin: 4px 0 0; padding: 18px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line);
+    display: grid; grid-template-columns: 88px 1fr; gap: 10px 14px; font-size: 14px; line-height: 1.55;
+  }
+  .report[hidden] { display: none; }
+  .report dt { color: var(--muted); font-size: 12px; padding-top: 2px; }
+  .report dd { margin: 0; color: var(--text); }
+  .report dd.result { color: var(--accent-hover); }
+  @media (max-width: 420px) { .report { grid-template-columns: 1fr; gap: 4px; } .report dd { margin-bottom: 8px; } }
+  .foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 0 24px 0 14px; border-top: 1px solid var(--line);
+  }
+  .toggle {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 10px;
+    border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 14px; font-weight: 600;
+  }
+  .caret { display: inline-block; transition: transform 0.2s; }
+  .toggle[aria-expanded='true'] .caret { transform: rotate(180deg); }
+  .visit { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; color: var(--muted); transition: color 0.15s; }
+</style>
+
+<script>
+  import '../scripts/filters';
+
+  document.querySelectorAll<HTMLButtonElement>('[data-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const report = document.getElementById(btn.getAttribute('aria-controls')!)!;
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      report.hidden = !open;
+      btn.querySelector('[data-label]')!.textContent = open ? 'Hide test report' : 'View test report';
+    });
+  });
+</script>

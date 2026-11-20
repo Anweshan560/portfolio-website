@@ -1,0 +1,51 @@
+---
+import { pyramid } from '../data/content';
+
+const tiers = [
+  { width: '40%', min: '180px', bg: '#34D399', fg: '#04210F' },
+  { width: '60%', min: '220px', bg: '#1F7A5A', fg: '#F0FDF4' },
+  { width: '80%', min: '260px', bg: '#174A3B', fg: '#F0FDF4' },
+  { width: '100%', min: '0', bg: '#12302A', fg: '#D1FAE5', border: true },
+];
+---
+<section class="container section">
+  <div class="panel">
+    <div class="copy">
+      <div class="eyebrow">// where I add value</div>
+      <h2 class="h2 small">Testing across the whole pyramid</h2>
+      <p class="lead">Fast, cheap checks at the base; fewer, high-value end-to-end and exploratory tests at the top. Balanced coverage catches more and breaks less.</p>
+    </div>
+    <ol class="pyramid" aria-label="Test pyramid">
+      {pyramid.map((p, i) => {
+        const t = tiers[i];
+        return (
+          <li
+            class:list={['tier', { bordered: t.border }]}
+            style={`width:${t.width};min-width:${t.min};background:${t.bg};color:${t.fg}`}
+          >
+            <span class="t">{p.title}</span>
+            <span class="s">{p.sub}</span>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .panel {
+    border: 1px solid var(--line); border-radius: 20px; background: var(--bg-2);
+    padding: 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px;
+  }
+  @media (max-width: 700px) { .panel { padding: 28px 20px; gap: 36px; } }
+  .copy { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+  .h2.small { font-size: clamp(28px, 3vw, 38px); line-height: 1.15; }
+  .pyramid {
+    list-style: none; margin: 0; padding: 0;
+    flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .tier { max-width: 100%; padding: 16px 12px; border-radius: 10px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+  .tier.bordered { border: 1px solid var(--accent-line); }
+  .t { font-weight: 600; font-size: 15px; }
+  .s { font-size: 12px; }
+</style>

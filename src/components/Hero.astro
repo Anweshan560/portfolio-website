@@ -1,0 +1,172 @@
+---
+import Icon from './Icon.astro';
+import { profile, hero, terminalTests } from '../data/content';
+---
+<section class="grid-bg hero-wrap">
+  <div class="container hero">
+    <div class="hero-copy">
+      <div class="badge mono">
+        <span class="dot pulse" aria-hidden="true"></span>
+        {profile.availability}
+      </div>
+      <div class="stack" style="gap: 14px">
+        <div class="mono hello">
+          Hi, I'm <span class="strong">{profile.firstName}</span> — {profile.role}
+        </div>
+        <h1 class="h1">{hero.headline} <span class="accent">{hero.highlight}</span></h1>
+      </div>
+      <p class="intro">{hero.intro}</p>
+      <div class="ctas">
+        <a href="#projects" class="btn btn-primary">
+          See my projects <Icon name="arrowRight" />
+        </a>
+        <a href={profile.cv} class="btn btn-ghost" download>
+          <Icon name="download" /> Download resume
+        </a>
+      </div>
+      <div class="meta">
+        <span><Icon name="pin" size={16} class="accent" /> {profile.location}</span>
+        <span><Icon name="briefcase" size={16} class="accent" /> Senior QA @ {profile.company}</span>
+        <span><Icon name="globe" size={16} class="accent" /> {profile.workMode}</span>
+      </div>
+    </div>
+
+    <div class="terminal" data-terminal>
+      <div class="term-bar">
+        <div class="term-title">
+          <span class="light" style="background:#F87171" aria-hidden="true"></span>
+          <span class="light" style="background:#FBBF24" aria-hidden="true"></span>
+          <span class="light" style="background:#34D399" aria-hidden="true"></span>
+          <span class="mono file">tests/anweshan.spec.ts</span>
+        </div>
+        <button type="button" class="text-btn rerun mono" data-rerun>
+          <Icon name="rerun" size={13} stroke={2.2} /> Re-run
+        </button>
+      </div>
+      <div class="term-body mono" aria-live="polite">
+        <div class="cmd"><span class="accent">❯</span> npm test -- anweshan.spec.ts</div>
+        <div class="muted-line">Running {terminalTests.length} tests using 1 worker</div>
+        <ul class="lines">
+          {terminalTests.map((t) => (
+            <li class="line" data-line>
+              <span class="ico" aria-hidden="true">○</span>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="bar"><div class="bar-fill" data-progress></div></div>
+        <div class="summary">
+          <span><span class="passed" data-passed>0 passed</span> <span class="dim">· 0 failed · 0 flaky</span></span>
+          <span class="dim"><span data-status>running</span><span class="blink accent">▍</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-wrap { border-bottom: 1px solid var(--line); }
+  .hero {
+    padding-top: 96px; padding-bottom: 88px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 64px;
+  }
+  @media (max-width: 700px) { .hero { padding-top: 64px; padding-bottom: 64px; gap: 48px; } }
+  .hero-copy { flex: 1 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+  .badge {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 14px 7px 10px; border-radius: 999px;
+    border: 1px solid var(--accent-line); background: rgba(52, 211, 153, 0.08);
+    color: #a7f3d0; font-size: 13px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .hello { font-size: 15px; color: var(--muted); }
+  .strong { color: var(--text); font-weight: 600; }
+  .h1 {
+    margin: 0; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(42px, 5.4vw, 72px); line-height: 1.02; letter-spacing: -0.03em;
+    color: var(--text-strong);
+  }
+  .intro { font-size: 19px; line-height: 1.65; color: var(--muted); max-width: 560px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .ctas .btn-ghost { padding: 0 22px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 12px 24px; padding-top: 8px; font-size: 14px; color: var(--muted); }
+  .meta span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+
+  .terminal {
+    flex: 1 1 460px; min-width: 0; border-radius: 16px; border: 1px solid var(--line);
+    background: var(--term); overflow: hidden;
+    box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(52, 211, 153, 0.04);
+  }
+  .term-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--surface);
+  }
+  .term-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .light { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: none; }
+  .file { margin-left: 10px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rerun {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px;
+    border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 12px;
+  }
+  .term-body { padding: 22px 24px 24px; font-size: 14px; line-height: 1.95; }
+  @media (max-width: 600px) { .term-body { padding: 18px; font-size: 13px; } }
+  .cmd { color: var(--text); }
+  .muted-line { color: var(--dim); margin-bottom: 8px; }
+  .lines { list-style: none; margin: 0; padding: 0; }
+  .line { display: flex; gap: 12px; color: var(--dim); }
+  .line .ico { width: 14px; flex: none; text-align: center; color: var(--dim); }
+  .line.is-active { color: #fde68a; }
+  .line.is-active .ico { color: #fbbf24; }
+  .line.is-done { color: var(--text); }
+  .line.is-done .ico { color: var(--accent); }
+  .bar { margin-top: 16px; height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .bar-fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+  .summary { margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .passed { color: var(--accent); font-weight: 600; }
+  .dim { color: var(--dim); }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-terminal]');
+  if (root) {
+    const lines = Array.from(root.querySelectorAll<HTMLElement>('[data-line]'));
+    const progress = root.querySelector<HTMLElement>('[data-progress]')!;
+    const passed = root.querySelector<HTMLElement>('[data-passed]')!;
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const total = lines.length;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let step = 0;
+    let timer: number | undefined;
+
+    const render = () => {
+      const running = step < total;
+      lines.forEach((el, i) => {
+        const done = i < step;
+        const active = !done && i === step && running;
+        el.classList.toggle('is-done', done);
+        el.classList.toggle('is-active', active);
+        const ico = el.querySelector<HTMLElement>('.ico')!;
+        ico.textContent = done ? '✓' : active ? '◌' : '○';
+        ico.classList.toggle('spin', active);
+      });
+      progress.style.width = `${Math.round((step / total) * 100)}%`;
+      passed.textContent = `${step} passed`;
+      status.textContent = running ? 'running' : 'release ready';
+    };
+
+    const start = () => {
+      window.clearInterval(timer);
+      step = reduced ? total : 0;
+      render();
+      if (reduced) return;
+      timer = window.setInterval(() => {
+        step += 1;
+        render();
+        if (step >= total) window.clearInterval(timer);
+      }, 650);
+    };
+
+    root.querySelector('[data-rerun]')?.addEventListener('click', start);
+    start();
+  }
+</script>

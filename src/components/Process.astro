@@ -1,0 +1,34 @@
+---
+import { process } from '../data/content';
+---
+<section id="process" class="container section stack" style="gap: 44px">
+  <div class="head">
+    <div class="stack" style="gap: 16px; max-width: 640px">
+      <div class="eyebrow">02 · describe('process')</div>
+      <h2 class="h2">How I test a release</h2>
+    </div>
+    <p class="lead" style="max-width: 420px">A repeatable software testing life cycle, adapted to each team's sprint rhythm.</p>
+  </div>
+  <ol class="steps">
+    {process.map((s, i) => (
+      <li class:list={['card', 'step', { 'is-final': i === process.length - 1 }]}>
+        <span class="mono num">STEP {String(i + 1).padStart(2, '0')}</span>
+        <h3>{s.title}</h3>
+        <p>{s.text}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px;
+  }
+  .step { padding: 24px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .step.is-final { border-color: var(--accent-line); background: rgba(52, 211, 153, 0.06); }
+  .num { font-size: 13px; color: var(--accent); }
+  .step h3 { font-size: 18px; font-weight: 600; color: var(--text-strong); }
+  .step p { font-size: 14px; line-height: 1.6; color: var(--muted); }
+</style>

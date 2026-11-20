@@ -1,0 +1,160 @@
+---
+import Icon from './Icon.astro';
+import { profile, ticketTypes } from '../data/content';
+---
+<section id="contact" class="container section contact-wrap">
+  <div class="grid-bg panel">
+    <div class="copy">
+      <div class="eyebrow">05 · describe('contact')</div>
+      <h2 class="h2">Have a product that needs testing? Open a ticket.</h2>
+      <p class="para">Open to full-time QA roles and freelance testing projects. I usually respond within one business day.</p>
+      <div class="links">
+        <a href={`mailto:${profile.email}`} class="btn-ghost link">
+          <Icon name="mail" size={20} class="accent" /> {profile.email}
+        </a>
+        <a href={profile.linkedin} class="btn-ghost link" target="_blank" rel="noopener noreferrer">
+          <Icon name="linkedin" size={20} class="accent" /> {profile.linkedinLabel}
+        </a>
+      </div>
+    </div>
+
+    <div class="ticket" data-ticket data-email={profile.email}>
+      <form class="form" data-form>
+        <div class="mono ticket-head">
+          <span>NEW TICKET</span>
+          <span>assignee: {profile.firstName.toLowerCase()}</span>
+        </div>
+        <div class="row">
+          <div class="field-wrap">
+            <label for="c-name">Your name</label>
+            <input id="c-name" name="name" class="field" type="text" required placeholder="Jane Doe" autocomplete="name" />
+          </div>
+          <div class="field-wrap">
+            <label for="c-email">Work email</label>
+            <input id="c-email" name="email" class="field" type="email" required placeholder="jane@company.com" autocomplete="email" />
+          </div>
+        </div>
+        <fieldset>
+          <legend>Ticket type</legend>
+          <div class="types">
+            {ticketTypes.map((t, i) => (
+              <button type="button" class="type" data-type={t.label} aria-pressed={i === 0 ? 'true' : 'false'}>
+                <span class="type-dot" style={`background:${t.dot}`} aria-hidden="true"></span>
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+        <div class="field-wrap">
+          <label for="c-msg">Description</label>
+          <textarea id="c-msg" name="message" class="field" rows="4" required placeholder="Tell me about the role, product or project…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Submit ticket <Icon name="send" />
+        </button>
+        <p class="note">Opens your email app with the ticket filled in.</p>
+      </form>
+
+      <div class="done" role="status" data-done hidden>
+        <span class="done-icon" aria-hidden="true"><Icon name="check" size={28} stroke={2.4} /></span>
+        <div class="mono ticket-id"><span data-ticket-id></span> · status: OPEN</div>
+        <h3>Ticket drafted — thank you!</h3>
+        <p>Your email app should have opened with the details. Hit send there and I'll get back to you within one business day.</p>
+        <button type="button" class="btn btn-ghost again" data-reset>Open another ticket</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-wrap { padding-bottom: 120px; }
+  .panel {
+    border-radius: 24px; border: 1px solid var(--line); background-color: var(--bg-2);
+    padding: clamp(24px, 5vw, 64px); display: flex; flex-wrap: wrap; gap: 56px;
+  }
+  .copy { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+  .para { font-size: 17px; line-height: 1.7; color: var(--muted); }
+  .links { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; }
+  .link {
+    display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 18px;
+    border-radius: 12px; text-decoration: none; font-size: 15px; overflow-wrap: anywhere;
+  }
+  .ticket {
+    flex: 1 1 440px; min-width: 0; border-radius: 18px; border: 1px solid var(--line);
+    background: var(--surface); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  }
+  .form { padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+  @media (max-width: 600px) { .form { padding: 22px; } }
+  .form[hidden] { display: none; }
+  .ticket-head { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .row .field-wrap { flex: 1 1 180px; }
+  .field-wrap { display: flex; flex-direction: column; gap: 8px; }
+  label, legend { font-size: 14px; font-weight: 500; color: var(--text); }
+  fieldset { margin: 0; padding: 0; border: 0; }
+  legend { padding: 0; margin-bottom: 10px; }
+  .field {
+    min-height: 48px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: 10px;
+    background: var(--bg-2); color: var(--text); font: inherit; font-size: 15px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  textarea.field { padding: 12px 14px; line-height: 1.6; resize: vertical; }
+  .field::placeholder { color: #5b6a80; }
+  .field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2); }
+  .types { display: flex; flex-wrap: wrap; gap: 8px; }
+  .type {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
+    border-radius: 10px; border: 1px solid var(--line-2); background: transparent; color: var(--chip);
+    font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .type:hover { border-color: var(--accent); }
+  .type[aria-pressed='true'] { background: rgba(52, 211, 153, 0.12); color: var(--text); border-color: var(--accent); }
+  .type-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .note { font-size: 13px; color: var(--dim); text-align: center; margin-top: -8px; }
+  .done { padding: 48px 32px; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .done[hidden] { display: none; }
+  .done-icon {
+    width: 56px; height: 56px; border-radius: 16px; background: rgba(52, 211, 153, 0.12); color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ticket-id { font-size: 13px; color: var(--accent-hover); }
+  .done h3 { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--text-strong); }
+  .done p { font-size: 16px; line-height: 1.7; color: var(--muted); }
+  .again { min-height: 48px; padding: 0 20px; font-size: 15px; }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-ticket]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const done = root.querySelector<HTMLElement>('[data-done]')!;
+    const types = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-type]'));
+    let type = types[0]?.dataset.type ?? '';
+
+    types.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        type = btn.dataset.type!;
+        types.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      }),
+    );
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const id = `QA-${1000 + Math.floor(Math.random() * 9000)}`;
+      const subject = `[${id}] ${type} — ${data.get('name')}`;
+      const body = `${data.get('message')}\n\n— ${data.get('name')} <${data.get('email')}>`;
+      window.location.href = `mailto:${root.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      root.querySelector('[data-ticket-id]')!.textContent = id;
+      form.hidden = true;
+      done.hidden = false;
+    });
+
+    root.querySelector('[data-reset]')!.addEventListener('click', () => {
+      form.reset();
+      done.hidden = true;
+      form.hidden = false;
+    });
+  }
+</script>

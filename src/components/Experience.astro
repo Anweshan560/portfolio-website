@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+import { experience, education, profile } from '../data/content';
+---
+<section id="experience" class="container section exp">
+  <div class="intro">
+    <div class="eyebrow">01 · describe('experience')</div>
+    <h2 class="h2">Release log</h2>
+    <p class="lead">Roles, teams and what I shipped. The full history is in my resume.</p>
+    <a href={profile.cv} class="text-btn cv" download>
+      Download resume (PDF) <Icon name="download" size={16} />
+    </a>
+  </div>
+  <div class="list">
+    {experience.map((job) => (
+      <article class:list={['card', 'job', { 'is-accent': job.current }]}>
+        <div class="row">
+          <div class="when">
+            <span class:list={['mono', 'ver', { current: job.current }]}>{job.tag}</span>
+            <span class="mono dates">{job.dates}</span>
+          </div>
+          <span class="place">{job.place}</span>
+        </div>
+        <h3>{job.title} <span class="co">· {job.company}</span></h3>
+        {job.points.length > 0 && (
+          <ul>
+            {job.points.map((p) => <li>{p}</li>)}
+          </ul>
+        )}
+        {job.stack.length > 0 && (
+          <div class="tags">
+            {job.stack.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+      </article>
+    ))}
+    <article class="card job">
+      <div class="when">
+        <span class="mono ver">{education.tag}</span>
+        <span class="mono dates">{education.dates}</span>
+      </div>
+      <h3>{education.title}</h3>
+      <div class="badges">
+        {education.items.map((e) => (
+          <span class="edu"><Icon name={e.icon as any} size={16} class="accent" /> {e.text}</span>
+        ))}
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .exp { display: flex; flex-wrap: wrap; gap: 64px; }
+  .intro { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px; align-self: flex-start; position: sticky; top: 104px; }
+  @media (max-width: 1000px) { .intro { position: static; } }
+  .cv { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; font-size: 15px; text-decoration: none; }
+  .list { flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .job { padding: 28px 30px; display: flex; flex-direction: column; gap: 14px; }
+  @media (max-width: 600px) { .job { padding: 22px 20px; } }
+  .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .when { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .ver { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--chip); }
+  .ver.current { background: rgba(52, 211, 153, 0.12); color: var(--accent-hover); }
+  .dates { font-size: 13px; color: var(--muted); }
+  .place { font-size: 14px; color: var(--muted); }
+  .job h3 { font-size: 21px; font-weight: 600; color: var(--text-strong); }
+  .co { color: var(--muted); font-weight: 500; }
+  .job ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.75; color: var(--muted); }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; }
+  .edu {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--bg-2); font-size: 14px; color: var(--text);
+  }
+</style>
